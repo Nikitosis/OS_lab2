@@ -1,5 +1,7 @@
 package com.spos.lab2.locks;
 
+import lombok.SneakyThrows;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -12,24 +14,22 @@ import java.util.concurrent.locks.Condition;
 public class DekkersLock extends AbstractFixnumLock {
 
     private Set<Long> wantsToEnter = new HashSet<>();
-    private boolean turn = false;
+    private Boolean turn = false;
 
     public DekkersLock() {
         super(2);
     }
 
+    @SneakyThrows
     @Override
     public void lock() {
         wantsToEnter.add(getId());
 
-        while(wantsToEnter.size() != 1) {
+        while(wantsToEnter.size() > 1) {
             boolean turnPrev = turn;
-            if(turn == turnPrev) {
-                wantsToEnter.remove(getId());
-                while(turn == turnPrev) {
-                    //busy wait
-                }
-                wantsToEnter.add(getId());
+            while(turn == turnPrev) {
+                //busy wait
+                Thread.sleep(10);
             }
         }
     }
