@@ -17,6 +17,14 @@ public abstract class AbstractFixnumLock implements FixnumLock {
         this.threadLimit = threadLimit;
     }
 
+    public Integer getThreadLimit() {
+        return threadLimit;
+    }
+
+    public Set<Long> getRegisteredThreadIds() {
+        return registeredThreadIds;
+    }
+
     @Override
     public Long getId() {
         return Thread.currentThread().getId();

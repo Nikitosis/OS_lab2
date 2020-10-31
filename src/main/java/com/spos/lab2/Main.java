@@ -1,6 +1,8 @@
 package com.spos.lab2;
 
 import com.spos.lab2.locks.AbstractFixnumLock;
+import com.spos.lab2.locks.BakeryLock;
+import com.spos.lab2.locks.ImprovedBakeryLock;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -49,16 +51,26 @@ public class Main implements CommandLineRunner {
             }
         };
 
-        fixnumLock.register();
-
-        new Thread(() -> {
-            fixnumLock.register();
-            fixnumLock.unregister();
-        }).start();
-        new Thread(fixnumLock::register).start();
-        new Thread(fixnumLock::register).start();
-        new Thread(fixnumLock::register).start();
-        new Thread(fixnumLock::register).start();
-        new Thread(fixnumLock::register).start();
+//        fixnumLock.register();
+//
+//        new Thread(() -> {
+//            fixnumLock.register();
+//            fixnumLock.unregister();
+//        }).start();
+//        new Thread(fixnumLock::register).start();
+//        new Thread(fixnumLock::register).start();
+//        new Thread(fixnumLock::register).start();
+//        new Thread(fixnumLock::register).start();
+//        new Thread(fixnumLock::register).start();
+//
+//
+        ImprovedBakeryLock improvedBakeryLock = new ImprovedBakeryLock(20);
+        for (int i = 0; i < 6; i++) {
+            new Thread(improvedBakeryLock::bakeryAlgorithmRun).start();
+        }
+//        BakeryLock bakeryLock = new BakeryLock(20);
+//        for (int i = 0; i < 6; i++) {
+//            new Thread(bakeryLock::bakeryAlgorithmRun).start();
+//        }
     }
 }
