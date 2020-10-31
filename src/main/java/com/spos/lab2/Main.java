@@ -1,6 +1,7 @@
 package com.spos.lab2;
 
 import com.spos.lab2.locks.AbstractFixnumLock;
+import com.spos.lab2.locks.BakeryLock;
 import com.spos.lab2.locks.ImprovedBakeryLock;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -61,23 +62,26 @@ public class Main implements CommandLineRunner {
 //        new Thread(fixnumLock::register).start();
 //        new Thread(fixnumLock::register).start();
 //        new Thread(fixnumLock::register).start();
+//
+//
+//        ImprovedBakeryLock bakeryLock = new ImprovedBakeryLock(20);
+//        new Thread(bakeryLock::bakeryAlgorithmRun).start();
+//        new Thread(bakeryLock::bakeryAlgorithmRun).start();
+//        new Thread(bakeryLock::bakeryAlgorithmRun).start();
+//        new Thread(bakeryLock::bakeryAlgorithmRun).start();
+//        new Thread(bakeryLock::bakeryAlgorithmRun).start();
+//        new Thread(bakeryLock::bakeryAlgorithmRun).start();
+//        new Thread(bakeryLock::bakeryAlgorithmRun).start();
 
-        ImprovedBakeryLock bakeryLock = new ImprovedBakeryLock(20);
+
+        BakeryLock bakeryLock1 = new BakeryLock(20);
+        new Thread(bakeryLock1::bakeryAlgorithmRun).start();
+        new Thread(bakeryLock1::bakeryAlgorithmRun).start();
+        new Thread(bakeryLock1::bakeryAlgorithmRun).start();
+        new Thread(bakeryLock1::bakeryAlgorithmRun).start();
+        new Thread(bakeryLock1::bakeryAlgorithmRun).start();
+        new Thread(bakeryLock1::bakeryAlgorithmRun).start();
 
 
-        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock::bakeryAlgorithmRun).start();
     }
 }

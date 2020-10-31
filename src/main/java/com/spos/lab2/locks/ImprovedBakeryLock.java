@@ -50,6 +50,7 @@ public class ImprovedBakeryLock extends AbstractFixnumLock{
 
     @Override
     public Long register() {
+        System.out.println("Start");
             Long threadId = Thread.currentThread().getId();
             log.info("Registering thread with threadId={}", threadId);
 
@@ -70,7 +71,7 @@ public class ImprovedBakeryLock extends AbstractFixnumLock{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        System.out.println("Finish");
         return threadId;
     }
 
