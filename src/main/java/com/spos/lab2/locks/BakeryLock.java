@@ -3,13 +3,13 @@ package com.spos.lab2.locks;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.concurrent.locks.Condition;
 
 @Slf4j
 public class BakeryLock extends AbstractFixnumLock {
 
-    int[] numbers = new int[50];
+    int[] numbers;
+    private int maxThreadsId = 50;
 
     private int currentCounterValue = 0;
     private boolean checkLastNumber = false;
@@ -17,11 +17,12 @@ public class BakeryLock extends AbstractFixnumLock {
 
     public BakeryLock(Integer threadLimit) {
         super(threadLimit);
+        this.numbers = new int[maxThreadsId];
     }
 
     public void lock(int threadId) {
         int max = 0;
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < numbers.length; i++) {
             int current = numbers[i];
             if (current > max) {
                 max = current;
@@ -45,7 +46,7 @@ public class BakeryLock extends AbstractFixnumLock {
         else {
             currentCounterValue++;
         }
-        System.out.println(currentCounterValue);
+        System.out.println("Counter - " + currentCounterValue);
         checkLastNumber = !checkLastNumber;
 
         log.info("Registering thread with threadId={}", threadId);
@@ -72,6 +73,7 @@ public class BakeryLock extends AbstractFixnumLock {
 
     public void bakeryAlgorithmRun() {
         Long threatId = getId();
+
         lock(Math.toIntExact(threatId));
         register(threatId);
         unlock(Math.toIntExact(threatId));

@@ -9,14 +9,15 @@ import java.util.concurrent.locks.Condition;
 @Slf4j
 public class ImprovedBakeryLock extends AbstractFixnumLock{
 
-    AtomicIntegerArray ticket = new AtomicIntegerArray(50); // ticket for threads in line, n - number of threads
-// Java initializes each element of 'ticket' to 0
+    AtomicIntegerArray ticket; // ticket for threads in line, n - number of threads
+    AtomicIntegerArray entering; // 1 when thread entering in line
 
-    AtomicIntegerArray entering = new AtomicIntegerArray(50); // 1 when thread entering in line
-// Java initializes each element of 'entering' to 0
+    private int maxThreadsId = 50;
 
     public ImprovedBakeryLock(Integer threadLimit) {
         super(threadLimit);
+        this.ticket = new AtomicIntegerArray(maxThreadsId);
+        this.entering = new AtomicIntegerArray(maxThreadsId);
     }
 
     public void lock(int threadId) {
@@ -35,7 +36,7 @@ public class ImprovedBakeryLock extends AbstractFixnumLock{
             if (i != threadId) {
                 while (entering.get(i) == 1) {
                     Thread.yield();
-                } // wait while other thread picks a ticket
+                }
                 while (ticket.get(i) != 0 && ( ticket.get(threadId) > ticket.get(i)  ||
                         (ticket.get(threadId) == ticket.get(i) && threadId > i))) {
                     Thread.yield();

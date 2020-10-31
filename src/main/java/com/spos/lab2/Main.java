@@ -64,24 +64,13 @@ public class Main implements CommandLineRunner {
 //        new Thread(fixnumLock::register).start();
 //
 //
-//        ImprovedBakeryLock bakeryLock = new ImprovedBakeryLock(20);
-//        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-//        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-//        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-//        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-//        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-//        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-//        new Thread(bakeryLock::bakeryAlgorithmRun).start();
-
-
-        BakeryLock bakeryLock1 = new BakeryLock(20);
-        new Thread(bakeryLock1::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock1::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock1::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock1::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock1::bakeryAlgorithmRun).start();
-        new Thread(bakeryLock1::bakeryAlgorithmRun).start();
-
-
+        ImprovedBakeryLock improvedBakeryLock = new ImprovedBakeryLock(20);
+        for (int i = 0; i < 6; i++) {
+            new Thread(improvedBakeryLock::bakeryAlgorithmRun).start();
+        }
+//        BakeryLock bakeryLock = new BakeryLock(20);
+//        for (int i = 0; i < 6; i++) {
+//            new Thread(bakeryLock::bakeryAlgorithmRun).start();
+//        }
     }
 }
