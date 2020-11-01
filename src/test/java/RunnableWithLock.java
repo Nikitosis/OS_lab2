@@ -15,7 +15,7 @@ public class RunnableWithLock implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         Integer counter = 0;
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 1000; i++) {
             System.out.println("Locked thread: " + Thread.currentThread().getName());
             lock.lock();
 
