@@ -27,7 +27,7 @@ public class DekkersLock extends AbstractFixnumLock {
     @Override
     public void lock() {
         int curCounter = counter.addAndGet(1);
-        System.out.println("Cur counter: " + curCounter + " turn " + turn);
+        //System.out.println("Cur counter: " + curCounter + " turn " + turn);
 
         wantsToEnter.add(getId());
 
