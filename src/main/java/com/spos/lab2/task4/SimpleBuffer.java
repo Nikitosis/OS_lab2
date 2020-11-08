@@ -10,6 +10,7 @@ public class SimpleBuffer<T> {
     private int nextPos = 0;
     private int startPos = 0;
 
+    @SuppressWarnings("unchecked")
     public SimpleBuffer(int size) {
         this.maxSize = size;
         this.buffer = (T[])new Object[size];
