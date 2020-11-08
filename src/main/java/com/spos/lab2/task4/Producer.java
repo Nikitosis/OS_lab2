@@ -38,6 +38,7 @@ public class Producer implements Runnable {
                     throw new RuntimeException("Please don't interrupt the producer thread.", e);
                 }
             }
+            //Thread.yield();
 
             System.out.println("Inserting item " + newItem);
             buffer.put(newItem);

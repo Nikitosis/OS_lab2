@@ -20,7 +20,15 @@ public class SimpleBuffer<T> {
             throw new IndexOutOfBoundsException("Attempt to push element into full buffer!");
 
         buffer[nextPos] = element;
-        currentSize++;
+        //Increase element count
+        if (ProducerConsumerMain.SIMULATION_TYPE != SimulationType.I_WANT_LOST_ITEMS) {
+            currentSize++;
+        } else {
+            int newSize = currentSize + 1;
+            Thread.yield();
+            currentSize = newSize;
+            Thread.yield();
+        }
         nextPos = (nextPos + 1) % maxSize;
     }
     
@@ -29,7 +37,14 @@ public class SimpleBuffer<T> {
             throw new IndexOutOfBoundsException("Attempt to pop element from empty buffer!");
 
         T element = buffer[startPos];
-        currentSize--;
+        if (ProducerConsumerMain.SIMULATION_TYPE != SimulationType.I_WANT_LOST_ITEMS) {
+            currentSize--;
+        } else {
+            int newSize = currentSize - 1;
+            Thread.yield();
+            currentSize = newSize;
+            Thread.yield();
+        }
         startPos = (startPos + 1) % maxSize;
 
         return element;
