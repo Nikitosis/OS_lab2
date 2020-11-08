@@ -26,10 +26,13 @@ public class Producer implements Runnable {
             int newItem = nextItem;
             nextItem = (nextItem + 1) % 1_000_000_000;
 
-            if (buffer.getCount() == buffer.getMaxSize()) {
+            while (buffer.getCount() == buffer.getMaxSize()) {
+                //Thread.yield(); //uncomment this to cause deadlock
                 try {
                     synchronized (this) {
+                        System.out.println("Producer: start sleeping");
                         wait();
+                        System.out.println("Producer: wake up");
                     }
                 } catch (InterruptedException e) {
                     throw new RuntimeException("Please don't interrupt the producer thread.", e);
@@ -41,6 +44,7 @@ public class Producer implements Runnable {
             
             if (buffer.getCount() == 1) {
                 synchronized (consumer) {
+                    System.out.println("Producer: notify consumer");
                     consumer.notify();
                 }
             }

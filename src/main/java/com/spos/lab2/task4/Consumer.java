@@ -22,10 +22,13 @@ public class Consumer implements Runnable {
 
         while (true) {
             //wait
-            if (buffer.getCount() == 0) {
+            while (buffer.getCount() == 0) {
+                //Thread.yield(); //uncomment this to cause deadlock
                 try {
                     synchronized (this) {
+                        System.out.println("Consumer: start sleeping");
                         wait();
+                        System.out.println("Consumer: wake up");
                     }
                 } catch (InterruptedException e) {
                     throw new RuntimeException("Please don't interrupt the consumer thread.", e);
@@ -36,6 +39,7 @@ public class Consumer implements Runnable {
             
             if (buffer.getCount() == buffer.getMaxSize() - 1) {
                 synchronized (producer) {
+                    System.out.println("Consumer: notify producer");
                     producer.notify();
                 }
             }

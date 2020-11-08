@@ -29,7 +29,7 @@ public class SimpleBuffer<T> {
     }
     
     public int getCount() {
-        return queue.size();
+        return currentSize;
     }
     
     public int getMaxSize() {
