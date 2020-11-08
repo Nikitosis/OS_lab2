@@ -11,7 +11,7 @@ public class LockBenchmark {
     
     public void run(int threadCount, int maxSteps) {
         for (LockType lockType : LockType.values()) {
-            log.info("Testing {}...", lockType.getName());
+            log.info("Testing {} with {} threads, doing {} steps...", lockType.getName(), threadCount, maxSteps);
             
             this.maxSteps = maxSteps;
             counter = 0;

@@ -21,7 +21,7 @@ public class LockBenchmarkRunnable implements Runnable {
         do {
             lock.lock();
 
-            log.debug("Counter: {}, own step: {}", benchmark.getCounter(), ownSteps);
+            //log.info("Counter: {}, own step: {}", benchmark.getCounter(), ownSteps);
             if (benchmark.getCounter() >= benchmark.getMaxSteps()) {
                 shouldExit = true;
             } else {
