@@ -9,18 +9,23 @@ public class LockBenchmark {
     private int counter;
     private int maxSteps;
     
-    public void run() {
+    public void run(int threadCount, int maxSteps) {
         for (LockType lockType : LockType.values()) {
             log.info("Testing {}...", lockType.getName());
-
-            maxSteps = 1000;
-            counter = 0;
             
-            int threadCount = 2;
+            this.maxSteps = maxSteps;
+            counter = 0;
+
             LockBenchmarkRunnable[] runnables = new LockBenchmarkRunnable[threadCount];
             Thread[] threads = new Thread[threadCount];
 
-            FixnumLock lock = lockType.getLock(threadCount);
+            FixnumLock lock;
+            try {
+                lock = lockType.getLock(threadCount);
+            } catch (IllegalArgumentException e) {
+                log.warn("Cannot test {} with {} threads.", lockType.getName(), threadCount);
+                continue;
+            }
 
             long nanoTimeStart = System.nanoTime();
             for (int i = 0; i < threadCount; i++) {
@@ -39,7 +44,7 @@ public class LockBenchmark {
             }
 
             long nanoTimeEnd = System.nanoTime();
-            log.info("Time elapsed: {} ns", nanoTimeEnd - nanoTimeStart);
+            log.info("Reached {}, time elapsed: {} ns", counter, nanoTimeEnd - nanoTimeStart);
 
             for (int i = 0; i < threadCount; i++)
                 log.info("Thread {} did {} steps.", i, runnables[i].getOwnSteps());

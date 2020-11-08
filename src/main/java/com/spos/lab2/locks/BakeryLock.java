@@ -29,7 +29,7 @@ public class BakeryLock extends AbstractFixnumLock {
             }
         }
         numbers[threadId] = 1 + max;
-        System.out.println("Number of ticket " + (1 + max) + "  " + threadId);
+        //System.out.println("Number of ticket " + (1 + max) + "  " + threadId);
         for (int i = 0; i < numbers.length; i++) {
             while (numbers[i] != 0 && ( numbers[threadId] > numbers[i])) {}
         }

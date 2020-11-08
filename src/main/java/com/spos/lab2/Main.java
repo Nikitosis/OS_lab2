@@ -18,7 +18,7 @@ public class Main implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        new LockBenchmark().run();
+        new LockBenchmark().run(4, 100000);
 
 //        ImprovedBakeryLock improvedBakeryLock = new ImprovedBakeryLock(20);
 //        for (int i = 0; i < 6; i++) {

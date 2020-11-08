@@ -30,7 +30,7 @@ public class ImprovedBakeryLock extends AbstractFixnumLock{
             }
         }
         ticket.set(threadId, 1 + max);
-        System.out.println("Number of ticket " + (1 + max) + "  " + threadId);
+        //System.out.println("Number of ticket " + (1 + max) + "  " + threadId);
         entering.set(threadId, 0);
         for (int i = 0; i < ticket.length(); ++i) {
             if (i != threadId) {
