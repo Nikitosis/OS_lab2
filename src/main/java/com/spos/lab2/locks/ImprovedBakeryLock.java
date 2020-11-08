@@ -85,7 +85,7 @@ public class ImprovedBakeryLock extends AbstractFixnumLock{
 
     @Override
     public void lock() {
-
+        lock(Math.toIntExact(getId()));
     }
 
     @Override
@@ -105,7 +105,7 @@ public class ImprovedBakeryLock extends AbstractFixnumLock{
 
     @Override
     public void unlock() {
-
+        unlock(Math.toIntExact(getId()));
     }
 
     @Override
