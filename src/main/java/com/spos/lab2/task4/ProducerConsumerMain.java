@@ -17,11 +17,5 @@ public class ProducerConsumerMain {
 
         producerThread.start();
         consumerThread.start();
-
-        try {
-            //wait forever
-            producerThread.join();
-            consumerThread.join();
-        } catch (InterruptedException ignored) {}
     }
 }
