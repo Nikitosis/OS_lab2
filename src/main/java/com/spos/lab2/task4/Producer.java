@@ -27,7 +27,10 @@ public class Producer implements Runnable {
             nextItem = (nextItem + 1) % 1_000_000_000;
 
             while (buffer.getCount() == buffer.getMaxSize()) {
-                //Thread.yield(); //uncomment this to cause deadlock
+
+                if (ProducerConsumerMain.SIMULATION_TYPE == SimulationType.I_WANT_DEADLOCKS)
+                    Thread.yield();
+
                 try {
                     synchronized (this) {
                         System.out.println("Producer: start sleeping");
@@ -38,7 +41,6 @@ public class Producer implements Runnable {
                     throw new RuntimeException("Please don't interrupt the producer thread.", e);
                 }
             }
-            //Thread.yield();
 
             System.out.println("Inserting item " + newItem);
             buffer.put(newItem);

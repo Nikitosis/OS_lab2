@@ -24,9 +24,8 @@ public class SimpleBuffer<T> {
         if (ProducerConsumerMain.SIMULATION_TYPE != SimulationType.I_WANT_LOST_ITEMS) {
             currentSize++;
         } else {
-            int newSize = currentSize + 1;
             Thread.yield();
-            currentSize = newSize;
+            currentSize++;
             Thread.yield();
         }
         nextPos = (nextPos + 1) % maxSize;

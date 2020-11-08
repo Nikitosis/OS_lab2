@@ -23,7 +23,10 @@ public class Consumer implements Runnable {
 
         while (true) {
             while (buffer.getCount() == 0) {
-                //Thread.yield(); //uncomment this to cause deadlock
+
+                if (ProducerConsumerMain.SIMULATION_TYPE == SimulationType.I_WANT_DEADLOCKS)
+                    Thread.yield();
+
                 try {
                     synchronized (this) {
                         System.out.println("Consumer: start sleeping");
@@ -34,7 +37,6 @@ public class Consumer implements Runnable {
                     throw new RuntimeException("Please don't interrupt the consumer thread.", e);
                 }
             }
-            //Thread.yield();
 
             int item = buffer.get();
             System.out.println("Consumed item " + item);
