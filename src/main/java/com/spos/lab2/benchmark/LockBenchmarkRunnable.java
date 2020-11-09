@@ -4,13 +4,15 @@ import com.spos.lab2.locks.FixnumLock;
 import com.spos.lab2.locks.LockType;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.concurrent.locks.Lock;
+
 @Slf4j
 public class LockBenchmarkRunnable implements Runnable {
     private final LockBenchmark benchmark;
-    private final FixnumLock lock;
+    private final Lock lock;
     private int ownSteps = 0;
     
-    public LockBenchmarkRunnable(LockBenchmark benchmark, FixnumLock lock) {
+    public LockBenchmarkRunnable(LockBenchmark benchmark, Lock lock) {
         this.benchmark = benchmark;
         this.lock = lock;
     }

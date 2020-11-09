@@ -4,6 +4,8 @@ import com.spos.lab2.locks.FixnumLock;
 import com.spos.lab2.locks.LockType;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.concurrent.locks.Lock;
+
 @Slf4j
 public class LockBenchmark {
     private int counter;
@@ -19,7 +21,7 @@ public class LockBenchmark {
             LockBenchmarkRunnable[] runnables = new LockBenchmarkRunnable[threadCount];
             Thread[] threads = new Thread[threadCount];
 
-            FixnumLock lock;
+            Lock lock;
             try {
                 lock = lockType.getLock(threadCount);
             } catch (IllegalArgumentException e) {

@@ -1,9 +1,12 @@
 package com.spos.lab2.locks;
 
+import java.util.concurrent.locks.Lock;
+
 public enum LockType {
     BAKERY("Bakery algorithm"),
     IMPROVED_BAKERY("Improved bakery algorithm"),
-    DEKKERS("Dekker's algorithm");
+    DEKKERS("Dekker's algorithm"),
+    SPIN_LOCK("SpinLock");
 
     private final String name;
 
@@ -15,7 +18,7 @@ public enum LockType {
         return name;
     }
 
-    public FixnumLock getLock(int threadLimit) {
+    public Lock getLock(int threadLimit) {
         switch (this) {
             case BAKERY:
                 return new BakeryLock(threadLimit);
@@ -25,6 +28,8 @@ public enum LockType {
                 return new DekkersLock();
             case IMPROVED_BAKERY:
                 return new ImprovedBakeryLock(threadLimit);
+            case SPIN_LOCK:
+                return new SpinLock();
             default:
                 throw new IllegalStateException("Illegal LockType");
         }
