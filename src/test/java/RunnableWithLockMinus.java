@@ -1,14 +1,13 @@
 import com.spos.lab2.locks.AbstractFixnumLock;
-import com.spos.lab2.locks.DekkersLock;
 
 import java.util.concurrent.Callable;
 
-public class RunnableWithLock implements Runnable {
+public class RunnableWithLockMinus implements Runnable {
     private AbstractFixnumLock lock;
     private Integer counter;
 
 
-    public RunnableWithLock(AbstractFixnumLock lock, Integer counter) {
+    public RunnableWithLockMinus(AbstractFixnumLock lock, Integer counter) {
         System.out.println("Creating new thread...");
         this.counter = counter;
         this.lock = lock;
@@ -20,14 +19,10 @@ public class RunnableWithLock implements Runnable {
             System.out.println("Locked thread: " + Thread.currentThread().getName());
             lock.lock();
 
-            counter++;
+            counter--;
 
             lock.unlock();
             System.out.println("Unlocked thread: " + Thread.currentThread().getName());
         }
-    }
-
-    public Integer getCounter() {
-        return counter;
     }
 }

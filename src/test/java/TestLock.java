@@ -1,4 +1,5 @@
 import com.spos.lab2.locks.DekkersLock;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.ExecutionException;
@@ -9,12 +10,17 @@ import java.util.concurrent.Future;
 public class TestLock {
     @Test
     void DekkersLockTest() throws InterruptedException, ExecutionException {
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        Integer counter = 0;
         DekkersLock dekkersLock = new DekkersLock();
-        Future<Integer> f1 = executorService.submit(new RunnableWithLock(dekkersLock));
-        Future<Integer> f2 = executorService.submit(new RunnableWithLock(dekkersLock));
+        RunnableWithLock runnableWithLock = new RunnableWithLock(dekkersLock, counter);
+        RunnableWithLockMinus runnableWithLockMinus = new RunnableWithLockMinus(dekkersLock, counter);
+        Thread t1 = new Thread(runnableWithLock);
+        Thread t2 = new Thread(runnableWithLockMinus);
 
-        System.out.println("F1: "+f1.get());
-        System.out.println("F2: "+f2.get());
+        t1.join();
+        t2.join();
+
+        System.out.println("Counter: " + counter);
+        Assertions.assertEquals(0, counter);
     }
 }
