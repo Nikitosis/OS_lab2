@@ -46,7 +46,7 @@ public class LockBenchmark {
             }
 
             long nanoTimeEnd = System.nanoTime();
-            log.info("Reached {}, time elapsed: {} ns", counter, nanoTimeEnd - nanoTimeStart);
+            log.info("Reached {}, time elapsed: {} ms", counter, (nanoTimeEnd - nanoTimeStart) / 1_000_000);
 
             for (int i = 0; i < threadCount; i++)
                 log.info("Thread {} did {} steps.", i, runnables[i].getOwnSteps());
