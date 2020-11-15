@@ -4,6 +4,7 @@ import com.spos.lab2.locks.FixnumLock;
 import com.spos.lab2.locks.LockType;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -15,12 +16,22 @@ public class LockBenchmark {
     private final int threadCount;
     private final int runs;
     private final Map<LockType, long[]> benchmarkTimes;
+    private final boolean printDetail;
     private boolean launched = false;
 
     public LockBenchmark(int threadCount, int maxSteps, int runs) {
+        this(threadCount, maxSteps, runs, false);
+    }
+    
+    public LockBenchmark(int threadCount, int maxSteps, boolean printDetail) {
+        this(threadCount, maxSteps, 1, printDetail);
+    }
+    
+    public LockBenchmark(int threadCount, int maxSteps, int runs, boolean printDetail) {
         this.maxSteps = maxSteps;
         this.runs = runs;
         this.threadCount = threadCount;
+        this.printDetail = printDetail;
         benchmarkTimes = new HashMap<>();
         for (LockType lockType : LockType.values())
             benchmarkTimes.put(lockType, new long[runs]);
@@ -28,17 +39,34 @@ public class LockBenchmark {
     
     public void run() {
         if (launched)
-            throw new IllegalStateException("Benchmark already running.");
+            throw new IllegalStateException("Benchmark has already been launched.");
         
         launched = true;
         
         for (int runNumber = 0; runNumber < runs; runNumber++)
-            runStep(threadCount, maxSteps, runNumber);
+            runSteps(runNumber);
+
+        log.info("========================================");
+        log.info("Results for test: {} steps, {} threads", maxSteps, threadCount);
+        log.info("========================================");
+        for (LockType lockType : LockType.values()) {
+            long nanosAvg = 0, nanosMax = 0;
+
+            long[] nanosTimes = benchmarkTimes.get(lockType);
+            for (long nanoTime : nanosTimes) {
+                nanosAvg += nanoTime;
+                if (nanoTime > nanosMax)
+                    nanosMax = nanoTime;
+            }
+            nanosAvg /= nanosTimes.length;
+            log.info("avg. {} ms, max. {} ms - {}", nanosAvg / 1_000_000, nanosMax / 1_000_000, lockType.getName());
+        }
     }
     
-    private void runStep(int threadCount, int maxSteps, int runNumber) {
+    private void runSteps(int runNumber) {
         for (LockType lockType : LockType.values()) {
-            log.info("Testing {} with {} threads, doing {} steps...", lockType.getName(), threadCount, maxSteps);
+            if (printDetail)
+                log.info("Testing {} with {} threads, doing {} steps...", lockType.getName(), threadCount, maxSteps);
 
             counter = 0;
 
@@ -49,7 +77,8 @@ public class LockBenchmark {
             try {
                 lock = lockType.getLock(threadCount);
             } catch (IllegalArgumentException e) {
-                log.warn("Cannot test {} with {} threads.", lockType.getName(), threadCount);
+                if (printDetail)
+                    log.warn("Cannot test {} with {} threads.", lockType.getName(), threadCount);
                 continue;
             }
 
@@ -59,7 +88,7 @@ public class LockBenchmark {
                 threads[i] = new Thread(runnables[i]);
                 if (lock instanceof FixnumLock) {
                     int id = ((FixnumLock) lock).register(threads[i].getId());
-                    log.info("Registered thread {} as {}", threads[i].getId(), id);
+                    log.debug("Registered thread {} as {}", threads[i].getId(), id);
                 }
             }
 
@@ -75,10 +104,13 @@ public class LockBenchmark {
 
             long nanoTimeEnd = System.nanoTime();
             long nanoTime = nanoTimeEnd - nanoTimeStart;
-            log.info("Reached {}, time elapsed: {} ms", counter, nanoTime / 1_000_000);
+            if (printDetail)
+                log.info("Reached {}, time elapsed: {} ms", counter, nanoTime / 1_000_000);
 
-            for (int i = 0; i < threadCount; i++)
-                log.info("Thread {} did {} steps.", i, runnables[i].getOwnSteps());
+            if (printDetail) {
+                for (int i = 0; i < threadCount; i++)
+                    log.info("Thread {} did {} steps.", i, runnables[i].getOwnSteps());
+            }
 
             benchmarkTimes.get(lockType)[runNumber] = nanoTime;
         }

@@ -18,7 +18,7 @@ public class Main implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        new LockBenchmark(10, 10000, 1).run();
+        new LockBenchmark(10, 100000, true).run();
         new LockBenchmark(4, 10000, 10).run();
         new LockBenchmark(2, 10000, 10).run();
 

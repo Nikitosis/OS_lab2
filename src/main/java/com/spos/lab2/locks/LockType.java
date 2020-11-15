@@ -4,7 +4,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public enum LockType {
-    BAKERY("Bakery algorithm"),
+    //BAKERY("Bakery algorithm"),
     IMPROVED_BAKERY("Improved bakery algorithm"),
     DEKKERS("Dekker's algorithm"),
     SPIN_LOCK("SpinLock"),
@@ -30,8 +30,8 @@ public enum LockType {
                 return new ReentrantLock(true);
             case REENTRANT:
                 return new ReentrantLock(false);
-            case BAKERY:
-                return new BakeryLock(threadLimit);
+            //case BAKERY:
+                //return new BakeryLock(threadLimit);
             case DEKKERS:
                 if (threadLimit != 2)
                     throw new IllegalArgumentException("Dekker's algorithm only works with 2 threads!");

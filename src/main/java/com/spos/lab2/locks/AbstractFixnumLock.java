@@ -12,7 +12,7 @@ public abstract class AbstractFixnumLock implements FixnumLock {
     private final Object monitor = new Object();
 
     private final Integer threadLimit;
-    private final HashMap<Long, Integer> registeredThreadIds = new HashMap();
+    private final HashMap<Long, Integer> registeredThreadIds = new HashMap<>();
 
     public AbstractFixnumLock(Integer threadLimit) {
         this.threadLimit = threadLimit;
