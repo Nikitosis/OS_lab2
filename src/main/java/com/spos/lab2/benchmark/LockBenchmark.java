@@ -47,7 +47,7 @@ public class LockBenchmark {
             runSteps(runNumber);
 
         log.info("========================================");
-        log.info("Results for test: {} steps, {} threads", maxSteps, threadCount);
+        log.info("Results for test: {} runs, {} steps, {} threads", runs, maxSteps, threadCount);
         log.info("========================================");
         for (LockType lockType : LockType.values()) {
             long nanosAvg = 0, nanosMax = 0;
