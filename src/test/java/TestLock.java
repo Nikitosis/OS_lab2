@@ -17,6 +17,9 @@ public class TestLock {
         Thread t1 = new Thread(runnableWithLock);
         Thread t2 = new Thread(runnableWithLockMinus);
 
+        t1.start();
+        t2.start();
+
         t1.join();
         t2.join();
 
