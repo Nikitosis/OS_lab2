@@ -9,7 +9,6 @@ import java.util.concurrent.locks.Condition;
 public class BakeryLock extends AbstractFixnumLock {
 
     int[] numbers;
-    private int maxThreadsId = 50;
 
     private int currentCounterValue = 0;
     private boolean checkLastNumber = false;
@@ -17,10 +16,10 @@ public class BakeryLock extends AbstractFixnumLock {
 
     public BakeryLock(Integer threadLimit) {
         super(threadLimit);
-        this.numbers = new int[maxThreadsId];
+        this.numbers = new int[threadLimit];
     }
 
-    public void lock(int threadId) {
+    private void lock(int threadId) {
         int max = 0;
         for (int i = 0; i < numbers.length; i++) {
             int current = numbers[i];
@@ -35,11 +34,12 @@ public class BakeryLock extends AbstractFixnumLock {
         }
     }
 
-    public void unlock(int threadId) {
+    private void unlock(int threadId) {
         numbers[threadId] = 0;
     }
 
-    public Long register(Long threadId) {
+    @Override
+    public Integer register() {
         if (checkLastNumber) {
             currentCounterValue--;
         }
@@ -49,39 +49,12 @@ public class BakeryLock extends AbstractFixnumLock {
         System.out.println("Counter - " + currentCounterValue);
         checkLastNumber = !checkLastNumber;
 
-        log.info("Registering thread with threadId={}", threadId);
-
-        if(getRegisteredThreadIds().contains(threadId)) {
-            log.info("Thread is already registered with id={}", threadId);
-            return threadId;
-        }
-
-        if(getRegisteredThreadIds().size() >= getThreadLimit()) {
-            log.info("Thread limit is exceeded");
-            //TODO: wait???
-            return -1L;
-        }
-
-        getRegisteredThreadIds().add(threadId);
-        try {
-            Thread.sleep(2);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return threadId;
-    }
-
-    public void bakeryAlgorithmRun() {
-        Long threatId = getId();
-
-        lock(Math.toIntExact(threatId));
-        register(threatId);
-        unlock(Math.toIntExact(threatId));
+        return super.register();
     }
 
     @Override
     public void lock() {
-        lock(Math.toIntExact(getId()));
+        lock(getId());
     }
 
     @Override
@@ -101,7 +74,7 @@ public class BakeryLock extends AbstractFixnumLock {
 
     @Override
     public void unlock() {
-        unlock(Math.toIntExact(getId()));
+        unlock(getId());
     }
 
     @Override
